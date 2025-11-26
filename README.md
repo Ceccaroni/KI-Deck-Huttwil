@@ -4,12 +4,11 @@ Interne Plattform der Schule Huttwil zum Arbeiten mit Künstlicher Intelligenz (
 
 Das Projekt besteht aus:
 
-- einer **statischen Landing Page** für alle Lehrpersonen  
-- einem **Backend** (Docker + Node.js), das Inhalte auf der **Schul-Nextcloud** speichert  
-- einer geplanten **Admin-Oberfläche**, mit der eine verantwortliche Person Inhalte pflegen kann
+- einer statischen Landing Page für alle Lehrpersonen  
+- einem Backend (Docker + Node.js), das Inhalte auf der Schul-Nextcloud speichert  
+- einer Admin-Oberfläche, mit der eine verantwortliche Person Inhalte pflegen kann  
 
-Ziel:  
-Die Schule erhält einen klar strukturierten Einstieg in das Thema KI (z. B. fobizz, interne Leitplanken, Challenges, Fragen & Antworten), ohne dass Daten unkontrolliert in externe Cloud-Dienste abfliessen.
+Ziel ist es, der Schule einen klar strukturierten Zugang zum Umgang mit KI zu geben, ohne dass Daten in externe Cloud-Dienste abfliessen. Die Landing Page bleibt ein reiner Informations- und Demonstrationsbereich. Die Inhalte werden später dynamisch aus dem Backend geladen.
 
 ---
 
@@ -17,92 +16,35 @@ Die Schule erhält einen klar strukturierten Einstieg in das Thema KI (z. B. fob
 
 ### 1.1 Frontend
 
-- statische HTML/CSS/JS (keine Frameworks)
-- Landing Page mit sechs Kacheln:
-  - Sitzungs-Inputs
-  - Fragen & Antworten
-  - KI-News
-  - Challenge
-  - Support
-  - Leitplanken & Grundlagen
-- modernes Kartenlayout mit Farbverläufen
-- Overlay-Panel in der Bildschirmmitte mit FLIP-Animation:
-  - Karte wird angeklickt
-  - Overlay öffnet sich aus der Kartenposition in die Bildschirmmitte
-  - Overlay schliesst zurück in die Ausgangsposition
-- kleiner „Nach oben“-Button (Floating Action Button) in der Ecke
+Das Frontend besteht aus einer statischen Landing Page, die aus reinem HTML, CSS und JavaScript besteht. Sie bietet folgende Elemente:
 
-Aktuell sind die Inhalte in `scripts/main.js` noch **statisch** hinterlegt, aber bereits so strukturiert, dass sie später aus dem Backend bezogen werden können.
+- Header mit Schullogo und Titel
+- Sechs interaktive Kacheln (Sitzungs-Inputs, Fragen & Antworten, KI-News, Challenge, Support, Leitplanken)
+- Animation beim Öffnen eines Overlays: FLIP-Animation von der Kartenposition ins Zentrum des Bildschirms
+- „Nach oben“-Button (Floating Action Button)
+- Fokus auf moderne, klare Optik
+- Keine externen Abhängigkeiten, keine externen Skripte
 
-Wichtiger Projektentscheid:  
-Die Landing Page ist **eingefroren**.  
-Layout und Verhalten (Animationen, Hover, Overlay) gelten als fix und sollen nur noch minimal ergänzt werden (z. B. API-Fetch), aber nicht mehr optisch umgebaut werden.
-
----
+Inhalte wie Fragen & Antworten und die Challenge sind aktuell noch statisch in `scripts/main.js` hinterlegt. Später werden diese Inhalte aus dem Backend geladen. Die Landing Page ist funktional und visuell eingefroren und darf nicht mehr verändert werden.
 
 ### 1.2 Backend
 
-- `backend/`-Verzeichnis mit einer Node.js/Express-Applikation
-- läuft im Schulnetz in einem Docker-Container
-- spricht per WebDAV mit der Schul-Nextcloud
-- speichert alle Daten als JSON-Dateien in einem klar definierten Ordner:
+Das Backend liegt im Verzeichnis `backend/`. Es handelt sich um eine Node.js-Applikation, die in einem Docker-Container läuft. Das Backend kommuniziert über WebDAV mit der Schul-Nextcloud und speichert dort alle Daten als JSON-Dateien. Die Landing Page greift nur lesend auf das Backend zu.
 
-  ```text
-  /KI-Deck/
-    qa.json
-    news.json
-    challenge.json
-    tickets/
-      ticket_<id>.json
-    logs/
-      events.log (optional für spätere Erweiterungen)
+Das Backend bietet:
 
-bietet eine REST-API an:
+- öffentliche Lese-Endpunkte für die Landing Page  
+- geschützte Admin-Endpunkte (CRUD)  
+- Speicherung aller Inhalte ausschliesslich auf Schul-Nextcloud  
+- eine einzige Passwort-Authentifizierung für Admin-Zugriff  
+- JWT-basierte Session nach Login  
+- saubere Trennung zwischen Public- und Admin-Endpunkten
 
-öffentliche Endpunkte für die Landing Page (nur Lesezugriff)
+---
 
-geschützte Admin-Endpunkte (CRUD)
+## 2. Verzeichnisstruktur des Projekts
 
-Die Authentifizierung ist minimalistisch und schultauglich:
-
-kein Benutzername
-
-einziges Admin-Passwort (in .env)
-
-Login liefert einen JWT-Token
-
-Admin-Endpunkte sind mit Middleware geschützt
-
-1.3 Admin-UI (geplant)
-
-wird unter /admin/ liegen (separater Ordner)
-
-öffentlicher Zugang → Login → Admin-Passwort
-
-nach Login Zugriff auf:
-
-F&A (Fragen & Antworten) verwalten
-
-News verwalten
-
-Challenge bearbeiten (Titel, Text, Deadline)
-
-Support-Tickets einsehen
-
-Layout (Planung):
-
-linke Spalte: Navigation (F&A, News, Challenge, Tickets, Logout)
-
-rechte Seite: Liste + Editor
-
-Fokus auf Klarheit, nicht auf Show-Effekte
-
-Der Admin-Bereich ist bewusst von der öffentlichen Landing Page getrennt.
-
-2. Verzeichnisstruktur des Repos
-
-Ein mögliches Layout (Stand jetzt):
-
+```text
 /
   index.html
   styles/
@@ -111,7 +53,6 @@ Ein mögliches Layout (Stand jetzt):
     main.js
   assets/
     logo-huttwil.svg
-    (weitere Grafiken bei Bedarf)
 
   admin/
     index.html        (geplant)
@@ -138,386 +79,225 @@ Ein mögliches Layout (Stand jetzt):
       services/
         nextcloud.js
         storage.js
+````
 
-3. Frontend im Detail
-3.1 Landing Page
+---
 
-Die Landing Page liegt im Projektroot als index.html mit:
+## 3. Frontend im Detail
 
-Header mit Schullogo und Titel „KI an der Schule Huttwil“
+### 3.1 Landing Page
 
-Grid mit sechs Kacheln (Buttons)
+Die Landing Page besteht aus einem Grid von sechs Kacheln. Jede Kachel löst beim Anklicken ein Overlay aus, das sich mittels FLIP-Animation aus der Kartenposition vergrössert und zentriert. Die Inhalte der Overlays sind demonstrativ und werden später aus dem Backend geladen.
 
-Footer mit kleinem Status („Schule Huttwil · KI-Deck · Demo …“)
+### 3.2 Overlay und Animation
 
-Overlay-Komponente (dialog-ähnlich)
+Das Overlay verwendet eine FLIP-Animation:
 
-„Zurück nach oben“-Button
+* Ermittlung der originalen Position und Grösse der Karte
+* Overlay startet exakt an dieser Position
+* Animation führt das Overlay ins Zentrum und auf Zielgrösse
+* Schliessen animiert zurück an den Ausgangspunkt
 
-Die eigentliche Logik zum Öffnen des Overlays und zur Animation liegt in scripts/main.js.
+Dies erzeugt eine ruhige, hochwertige Interaktionsform ohne Fremdbibliotheken.
 
-3.2 Overlay und Animation
+### 3.3 Fragen & Antworten
 
-main.js:
+Die F&A-Ansicht im Overlay hat folgende Elemente:
 
-registriert Klicks auf .app-card
+* Avatar mit Initialen (Farbe aus Hash des Namens)
+* Frage als fett gesetzter Titel
+* Name und Datum der Frage
+* kleiner Pfeil rechts (dreht beim Öffnen)
+* Antwort in einem einklappbaren Bereich (standardmässig geschlossen)
+* Antworttext kursiv
+* Links sind klickbar
+* feine Trennlinien zwischen Einträgen
 
-ermittelt die Position und Grösse der Karte (getBoundingClientRect)
+Die Darstellung ist klar, übersichtlich und angelehnt an interne FAQs.
 
-berechnet daraus eine Starttransformation (Skalierung + Translation), damit das Overlay „aus der Karte heraus“ wächst
+### 3.4 Challenge
 
-positioniert das Panel zentriert im Viewport
+Die Challenge wird im Overlay mit modernen Designelementen dargestellt:
 
-animiert von Kartenposition → Mitte
+* Titel der Challenge
+* Lead-Text
+* horizontale Trennlinie
+* Badge mit Deadline
+* Highlight-Box mit Verlauf und Schatten
+* Beispiel-Prompt
+* Abschnitt „Was du einreichen sollst“
+* Buttons „Einreichen“ und „Letzte Gewinner“
 
-beim Schliessen: animiert zurück zur ursprünglichen Kartenposition
+Auch dieser Bereich ist aktuell noch statisch und wird später durch das Backend befüllt.
 
-Diese FLIP-Animation ist bewusst so umgesetzt, dass sie:
+---
 
-flüssig wirkt
+## 4. Backend im Detail
 
-für eine Demonstration geeignet ist
+Das Backend ist als Docker-Service vorgesehen, der im Schulnetz läuft. Es bietet API-Endpunkte, speichert Inhalte auf Nextcloud und verwaltet Admin-Zugriff über ein einziges Passwort.
 
-keine Abhängigkeit zu externen Libraries hat
+### 4.1 Technologie-Stack
 
-Inhaltlich rendert das Overlay je nach Karte:
+* Node.js
+* Express
+* WebDAV-Client
+* JWT
+* Docker
+* Umgebungsvariablen via `.env`
 
-statischen Text (z. B. Sitzungs-Inputs, News, Leitplanken)
+### 4.2 .env-Konfiguration
 
-strukturierte Anzeige (Fragen & Antworten, Challenge)
+Die Datei `.env` basiert auf `.env.example` und enthält z. B.:
 
-3.3 F&A (Fragen & Antworten)
-
-Im Overlay:
-
-Avatar mit Initialen (Name der fragenden Person)
-
-Hintergrundfarbe des Avatars anhand eines Hashes des Namens (stabile Farbe)
-
-Frage (fett)
-
-Meta-Zeile: Name · Datum
-
-elegant gesetzter Pfeil (›) rechts, der sich beim Öffnen dreht
-
-Antwort in einem einklappbaren Bereich:
-
-standardmässig geschlossen
-
-öffnet beim Klick auf den Header
-
-schliesst beim erneuten Klick
-
-Antworttext kursiv
-
-Links sind anklickbar (z. B. pointerpointer.com als Demo-Gag)
-
-feine Trennlinien zwischen den Beiträgen
-
-Ziel:
-
-F&A wirkt wie ein internes, geordnetes „Fragenbrett“, nicht wie ein Chat.
-
-3.4 Challenge
-
-Im Overlay:
-
-Titel: „Schulhaus-Prompt-Battle“
-
-Lead-Text
-
-horizontale Trennlinie
-
-kleine Badge rechts oben: „Deadline: …“
-
-Highlight-Box mit weichem Verlauf und Schatten:
-
-kurze Beschreibung der Aufgabe
-
-Beispiel-Prompt
-
-Abschnitt „Was du einreichen sollst“
-
-zwei Buttons:
-
-„Einreichen“
-
-„Letzte Gewinner“
-
-Aktuell ist die Challenge noch statisch im JS hinterlegt. Später wird sie via Backend und Nextcloud gepflegt.
-
-4. Backend im Detail
-
-Das Backend liegt im Verzeichnis backend/.
-
-4.1 Technologie-Stack
-
-Node.js
-
-Express
-
-WebDAV-Client (webdav-Package)
-
-JWT (jsonwebtoken)
-
-Docker als Laufzeitumgebung
-
-Konfiguration via .env
-
-4.2 Wichtige Dateien
-
-backend/package.json
-– beschreibt Abhängigkeiten und Startskripte
-
-backend/Dockerfile
-– definiert das Container-Image
-
-backend/docker-compose.yml
-– steuert den Container (Port, env, Restart-Policy)
-
-backend/src/server.js
-– Einstiegspunkt, bindet Routen und Middleware ein
-
-backend/src/routes/*.js
-– einzelne Routen für Public, Auth und Admin-CRUD
-
-backend/src/services/nextcloud.js
-– WebDAV-Client für Nextcloud
-
-backend/src/services/storage.js
-– Wrapper zum Laden/Speichern von JSON-Dateien auf Nextcloud
-
-backend/src/middleware/adminOnly.js
-– prüft den JWT-Token und schützt Admin-Routen
-
-4.3 .env-Konfiguration
-
-Die Datei .env (lokal, nicht commiten) basiert auf .env.example:
-
+```env
 PORT=8080
 
-ADMIN_PASSWORD=einStarkesPasswort
+ADMIN_PASSWORD=<passwort>
 
 NEXTCLOUD_BASE_URL=https://nextcloud.schule-huttwil.ch
-NEXTCLOUD_USER=ki-deck-service
-NEXTCLOUD_PASSWORD=geheimesPasswort
+NEXTCLOUD_USER=<service-user>
+NEXTCLOUD_PASSWORD=<service-passwort>
 NEXTCLOUD_ROOT_PATH=/KI-Deck
+```
 
+### 4.3 Daten auf Nextcloud
 
-ADMIN_PASSWORD wird für Login und Signatur des JWT verwendet
+Auf Nextcloud wird ein Ordner `/KI-Deck/` verwendet:
 
-Nextcloud-Zugänge sind reine Service-Zugänge (keine Personalkonten)
-
-4.4 API-Übersicht
-Öffentliche Routen (für Landing Page)
-
-GET /api/qa
-liefert eine Liste von F&A-Einträgen
-
-GET /api/news
-liefert eine Liste von News
-
-GET /api/challenge
-liefert die aktuell aktive Challenge
-
-POST /api/ticket
-nimmt ein Support-Ticket entgegen und speichert es als Datei
-
-Auth-Route
-
-POST /api/auth/login
-Body: { "password": "<ADMIN_PASSWORD>" }
-Wenn korrekt → Antwort { token: "<JWT>" }
-
-Dieser Token muss im Admin-UI bei Admin-Routen im Header mitgeschickt werden:
-
-Authorization: Bearer <JWT>
-
-Admin-Routen (CRUD, nur mit Token zugänglich)
-
-GET /api/admin/qa
-
-POST /api/admin/qa
-
-PUT /api/admin/qa/:id
-
-DELETE /api/admin/qa/:id
-
-GET /api/admin/news
-
-POST /api/admin/news
-
-PUT /api/admin/news/:id
-
-DELETE /api/admin/news/:id
-
-GET /api/admin/challenge
-
-PUT /api/admin/challenge
-
-GET /api/admin/tickets
-
-Diese Endpunkte greifen jeweils lesend/schreibend auf die entsprechenden JSON-Dateien auf Nextcloud zu.
-
-5. Daten auf Nextcloud
-5.1 Ordnerstruktur
-
-Auf Nextcloud (Schul-Nextcloud) wird ein Ordner eingerichtet, z. B.:
-
+```text
 /KI-Deck/
   qa.json
   news.json
   challenge.json
   tickets/
-    ticket_20250212_093012.json
-    ...
+    ticket_<id>.json
   logs/
-    events.log          (optional, für spätere Erweiterungen)
+    events.log (optional)
+```
 
-5.2 Beispielstrukturen
-qa.json
-{
-  "items": [
-    {
-      "id": "qa_001",
-      "question": "Darf ich KI für Arbeitsblätter verwenden?",
-      "answer": "Ja. Wenn du keine personenbezogenen Daten eingibst.",
-      "link": "https://pointerpointer.com",
-      "name": "Anna Keller",
-      "date_display": "12. Februar 2025",
-      "created_at": "2025-02-12T10:00:00Z"
-    }
-  ]
-}
+Diese Dateien werden vollständig über WebDAV gelesen und geschrieben.
 
-news.json
-{
-  "items": [
-    {
-      "id": "news_001",
-      "title": "KI-Basis-Schulung",
-      "body": "Am Pädagogischen Tag im März ...",
-      "created_at": "2025-02-10T09:00:00Z",
-      "visible_from": "2025-02-10T00:00:00Z",
-      "visible_to": null
-    }
-  ]
-}
+### 4.4 API-Endpunkte
 
-challenge.json
-{
-  "id": "challenge_current",
-  "title": "Schulhaus-Prompt-Battle",
-  "lead": "Die aktuelle Challenge der Schule Huttwil.",
-  "html": "<div class='challenge-divider'>...</div>",
-  "deadline": "2025-02-22"
-}
+Öffentliche Routen für die Landing Page:
 
-Tickets
+```
+GET    /api/qa
+GET    /api/news
+GET    /api/challenge
+POST   /api/ticket
+```
 
-/tickets/ticket_20250212_093012.json:
+Admin-Login:
 
-{
-  "id": "ticket_20250212_093012",
-  "created_at": "2025-02-12T09:30:12Z",
-  "from": "lehrperson@schule.ch",
-  "topic": "Fobizz-Zugang",
-  "body": "Ich bekomme keine Mail ...",
-  "status": "open"
-}
+```
+POST   /api/auth/login
+```
 
-6. Betriebsszenarien
-6.1 Lokal bei dir zu Hause (Entwicklung)
+Admin-CRUD:
 
-Für dich persönlich, ohne Docker, ohne Schulnetz:
+```
+GET    /api/admin/qa
+POST   /api/admin/qa
+PUT    /api/admin/qa/:id
+DELETE /api/admin/qa/:id
 
+GET    /api/admin/news
+POST   /api/admin/news
+PUT    /api/admin/news/:id
+DELETE /api/admin/news/:id
+
+GET    /api/admin/challenge
+PUT    /api/admin/challenge
+
+GET    /api/admin/tickets
+```
+
+---
+
+## 5. Betriebsszenarien
+
+### 5.1 Entwicklung auf eigenem Rechner
+
+Für lokales Testen ohne Docker:
+
+```bash
 cd backend
-cp .env.example .env   # Werte eintragen (für Tests evtl. Dummy)
+cp .env.example .env
 npm install
 npm run dev
+```
 
+Die API läuft dann unter:
 
-Dann:
+`http://localhost:8080/api/qa`
 
-http://localhost:8080/api/qa
+### 5.2 Produktivbetrieb im Schulnetz (Docker)
 
-Für Entwicklung kann der Storage bei Bedarf auf „lokale Dateien“ umgestellt werden (z. B. eigener storage-local.js). Das lässt sich später wieder auf Nextcloud zurückdrehen.
+Für die Schul-ICT:
 
-6.2 Im Schulnetz (Produktivbetrieb, Docker)
-
-Dieser Abschnitt ist für die Schul-ICT gedacht:
-
+```bash
 cd backend
-cp .env.example .env     # Parameter setzen
+cp .env.example .env
 docker-compose up -d --build
+```
 
+Prüfen:
 
-Der Dienst läuft dann z. B. auf:
+`http://<server-ip>:8080/api/qa`
 
-http://<server-ip>:8080/api/qa
+---
 
-Firewall: Port 8080 nur im LAN verfügbar machen, kein Zugriff von aussen.
+## 6. Admin-UI (geplant)
 
-7. Frontend-Anbindung an das Backend
+Die Admin-Oberfläche wird unter `/admin/` liegen und bietet:
 
-Aktuell ist das Frontend noch statisch.
-Später kann man schrittweise umstellen:
+* Login mit Admin-Passwort
+* Navigation in der linken Spalte:
 
-Beispiel (Pseudo):
+  * F&A
+  * News
+  * Challenge
+  * Tickets
+  * Logout
+* rechte Seite:
 
-fetch("/api/qa")
-  .then(r => r.json())
-  .then(items => {
-    // F&A-Overlay nicht mehr aus statischem Array aufbauen,
-    // sondern aus items.
-  });
+  * Listenansicht
+  * Editor zum Bearbeiten und Erstellen
 
+Die Admin-UI wird später implementiert und greift vollständig auf die Admin-API des Backends zu.
 
-Ziel:
-Optik und Verhalten bleiben identisch, nur die Datenquelle wechselt von „hardcodiert in main.js“ auf „Backend-API / Nextcloud“.
+---
 
-8. Admin-UI (Planung und Erweiterung)
+## 7. Sicherheit und Datenschutz
 
-Der Admin-UI-Bereich soll:
+* alle Daten werden ausschliesslich auf Schul-Nextcloud gespeichert
+* Backend läuft im Schulnetz (LAN)
+* nur ein Admin-Passwort (keine Personenzuordnung nötig)
+* kein Tracking, kein Logging von Personendaten
+* keine externen Dienste
+* Landing Page ist statisch und enthält keine Formulare mit sensiblen Daten
+* WebDAV-Zugang erfolgt über einen dedizierten Service-Account
 
-in /admin/ liegen
+---
 
-Login mit Passwort machen (POST /api/auth/login)
-
-Token im Speicher halten (z. B. localStorage oder in Memory)
-
-CRUD-Operationen aufrufen (/api/admin/...)
-
-Änderungen an F&A, News, Challenge, Tickets ermöglichen
-
-Weitere Details werden in separaten Schritten im Projekt konkretisiert.
-
-9. Sicherheit und Datenschutz
-
-Alle Daten liegen auf Schul-Nextcloud (CH-Recht, interne Policies)
-
-Backend läuft im Schulnetz (kein öffentlicher Port)
-
-Ein einziges Admin-Passwort (für kleine Organisationen realistischer als komplexes Rollenmodell)
-
-Kein Tracking, keine externen Services, keine Drittanbieter-Skripte im Frontend
-
-Landing Page ist statisch (keine Formulare mit Personendaten)
-
-10. Wartung und Weiterentwicklung
+## 8. Weiterentwicklung
 
 Mögliche nächste Schritte:
 
-Admin-UI bauen (/admin/)
+* Admin-UI implementieren
+* Logs ergänzen (Änderungsprotokoll)
+* lokale Speicheroption für Offline-Demos
+* sanfte Integration der Backend-Daten in die Landing Page
 
-Logs in /KI-Deck/logs/events.log schreiben (z. B. „Challenge geändert“, „F&A ergänzt“)
+---
 
-Rollenmodell erweitern (z. B. zwei Admin-Passwörter für verschiedene Verantwortliche)
+Status:
+Die Landing Page ist vollständig. Das Backend-Skelett steht. Die Admin-UI folgt im nächsten Schritt.
 
-Export/Backup-Funktion (z. B. als Download aller JSON-Daten)
+```
 
-Überprüfung der Texte auf barrierearme Sprache und klare Hinweise zum Datenschutz
+---
 
-Stand:
-Diese README beschreibt den Zustand, bei dem die Landing Page fertig designt ist und das Backend-Skelett mit Nextcloud-Bridge steht.
-Weitere Anpassungen am Frontend erfolgen nur noch sehr gezielt (z. B. Umstellung auf Backend-Daten), nicht am Layout.
+Wenn du willst, beginnen wir jetzt **mit dem Admin-UI-Gerüst**, also `/admin/index.html`, `/admin/main.css`, `/admin/main.js`.
+```
