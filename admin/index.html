@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KI-Deck Admin</title>
+  <link rel="stylesheet" href="main.css">
+</head>
+<body>
+
+  <!-- LOGIN OVERLAY -->
+  <div id="login-overlay" class="overlay visible">
+    <div class="login-panel">
+      <h1>Admin-Login</h1>
+      <p>Bitte Admin-Passwort eingeben:</p>
+
+      <input type="password" id="admin-password" placeholder="Passwort">
+      <button id="login-btn">Einloggen</button>
+
+      <div id="login-error" class="error-msg"></div>
+    </div>
+  </div>
+
+  <!-- ADMIN-APP -->
+  <div id="admin-app" class="hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2>KI-Deck Admin</h2>
+      </div>
+
+      <nav class="sidebar-nav">
+        <button class="nav-item" data-view="qa">Fragen & Antworten</button>
+        <button class="nav-item" data-view="news">News</button>
+        <button class="nav-item" data-view="challenge">Challenge</button>
+        <button class="nav-item" data-view="tickets">Tickets</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="logout-btn" class="logout">Logout</button>
+      </div>
+    </aside>
+
+    <!-- CONTENT-BEREICH -->
+    <main class="content">
+
+      <!-- Platzhalter: dynamisch per JS ersetzt -->
+      <div id="view-container" class="view-container">
+        <p class="placeholder">Bereich wählen...</p>
+      </div>
+
+    </main>
+
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
