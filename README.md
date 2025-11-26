@@ -294,10 +294,3 @@ Mögliche nächste Schritte:
 
 Status:
 Die Landing Page ist vollständig. Das Backend-Skelett steht. Die Admin-UI folgt im nächsten Schritt.
-
-```
-
----
-
-Wenn du willst, beginnen wir jetzt **mit dem Admin-UI-Gerüst**, also `/admin/index.html`, `/admin/main.css`, `/admin/main.js`.
-```
