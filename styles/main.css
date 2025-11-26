@@ -1,0 +1,415 @@
+/* ------------------------------------------------------------
+   Modern Gradient UI · Schule Huttwil · Version 0.5.0
+------------------------------------------------------------ */
+
+:root {
+  --bg-1: #faf6ee;
+  --bg-2: #ffffff;
+  --bg-3: #f6efe3;
+
+  --text-main: #111827;
+  --text-muted: #6b7280;
+  --text-80: rgba(0,0,0,0.80);
+
+  --card-radius: 22px;
+  --card-min-height: 210px;
+
+  --grad-sessions: linear-gradient(135deg, #6366f1, #a855f7);
+  --grad-qa:       linear-gradient(135deg, #22c1c3, #8fd3f4);
+  --grad-news:     linear-gradient(135deg, #b18cff, #d0b0ff);
+  --grad-challenge:linear-gradient(135deg, #ff9055, #ffb98b);
+  --grad-support:  linear-gradient(135deg, #22c58b, #6ee7b7);
+  --grad-guides:   linear-gradient(135deg, #f1c97b, #f6dd9f);
+}
+
+/* Basis ------------------------------------------------------ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body.app {
+  min-height: 100vh;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-main);
+  background:
+    radial-gradient(circle at top left, var(--bg-3), var(--bg-2) 45%, var(--bg-1));
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+/* Header ----------------------------------------------------- */
+
+.app-header {
+  padding: 1.25rem 1.75rem;
+}
+
+.app-header__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-header__logo {
+  height: 64px;
+}
+
+.app-header__titles {
+  text-align: right;
+}
+
+.app-header__title {
+  margin: 0;
+  font-size: clamp(1.6rem, 2.1vw, 1.9rem);
+  font-weight: 700;
+}
+
+.app-header__subtitle {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+/* Grid / Cards ----------------------------------------------- */
+
+.card-grid {
+  max-width: 1200px;
+  margin: 1.8rem auto 2.8rem auto;
+  padding: 0 1.75rem;
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.6rem;
+}
+
+@media (max-width: 1100px) {
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.app-card {
+  position: relative;
+  min-height: var(--card-min-height);
+  border-radius: var(--card-radius);
+  padding: 1.8rem 2rem;
+  cursor: pointer;
+  border: none;
+  color: #fff;
+
+  display: flex;
+  align-items: flex-end;
+
+  box-shadow:
+    0 22px 45px rgba(15, 23, 42, 0.22),
+    0 0 0 1px rgba(15, 23, 42, 0.09);
+
+  transition:
+    transform 180ms ease-out,
+    box-shadow 180ms ease-out;
+}
+
+.app-card:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 30px 65px rgba(15, 23, 42, 0.25),
+    0 0 0 1px rgba(15, 23, 42, 0.12);
+}
+
+.app-card__title {
+  font-size: 1.35rem;
+  font-weight: 670;
+}
+
+/* Farbverläufe */
+
+.app-card--sessions   { background-image: var(--grad-sessions); }
+.app-card--qa         { background-image: var(--grad-qa); }
+.app-card--news       { background-image: var(--grad-news); }
+.app-card--challenge  { background-image: var(--grad-challenge); }
+.app-card--support    { background-image: var(--grad-support); }
+.app-card--guidelines { background-image: var(--grad-guides); }
+
+/* Footer ----------------------------------------------------- */
+
+.app-footer__text {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.6rem;
+  text-align: center;
+  font-size: 0.80rem;
+  color: var(--text-80);
+  font-style: italic;
+}
+
+/* Overlay ---------------------------------------------------- */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 3000;
+}
+
+.overlay--visible {
+  display: block;
+}
+
+.overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  backdrop-filter: blur(9px);
+  opacity: 0;
+  transition: opacity 200ms ease-out;
+}
+
+.overlay--visible .overlay__backdrop {
+  opacity: 1;
+}
+
+.overlay__panel {
+  position: fixed;
+  width: min(720px, 94vw);
+  max-height: 82vh;
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1.7rem 1.9rem 2.3rem;
+  overflow: auto;
+
+  box-shadow:
+    0 20px 50px rgba(15, 23, 42, 0.25),
+    0 0 0 1px rgba(148, 163, 184, 0.25);
+}
+
+.overlay__title {
+  margin: 0 0 0.4rem 0;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.overlay__lead {
+  margin: 0 0 1.3rem 0;
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.overlay__close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+
+  background: radial-gradient(circle at 30% 30%, #ffffff, #dfe3e8);
+  box-shadow:
+    0 3px 6px rgba(0, 0, 0, 0.18),
+    0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+/* F&A – Avatar, Meta, Collapse ------------------------------- */
+
+.qa-block {
+  margin-bottom: 1.2rem;
+}
+
+.qa-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.qa-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.qa-text-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.qa-question {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.qa-meta {
+  margin: 0.15rem 0 0 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.qa-arrow {
+  margin-left: auto;
+  margin-top: 0.4rem;
+  font-size: 1.3rem;
+  color: var(--text-muted);
+  transition: transform 200ms ease-out;
+}
+
+.qa-answer-wrap {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 320ms ease-out;
+}
+
+.qa-answer {
+  margin: 0.45rem 0 0 3.7rem;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: #374151;
+}
+
+.qa-answer a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+/* aktiv */
+
+.qa-block.open .qa-answer-wrap {
+  max-height: 400px;
+}
+
+.qa-block.open .qa-arrow {
+  transform: rotate(90deg);
+}
+
+/* Trennlinie */
+
+.qa-divider {
+  width: 85%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.80);
+  margin: 1.2rem auto;
+}
+
+/* Challenge-Highlight ---------------------------------------- */
+
+.challenge-divider {
+  width: 85%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.80);
+  margin: 1.2rem auto 1.6rem auto;
+}
+
+.challenge-badge {
+  display: inline-block;
+  padding: 0.32rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+  color: #374151;
+  box-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(0, 0, 0, 0.10);
+  float: right;
+  margin-top: -2.2rem;
+}
+
+.challenge-highlight {
+  border-radius: 18px;
+  padding: 1.25rem 1.4rem;
+  margin-bottom: 1.3rem;
+  background: linear-gradient(135deg, #ffe8c8, #fff5e3);
+  box-shadow:
+    0 10px 28px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.challenge-highlight p {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.97rem;
+}
+
+.challenge-section-title {
+  margin-top: 1.4rem;
+  margin-bottom: 0.45rem;
+  font-size: 0.80rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+/* Buttons ---------------------------------------------------- */
+
+.overlay__actions {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 0.7rem 1.4rem;
+  border-radius: 12px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #2563eb, #60a5fa);
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #e5e7eb, #d1d5db);
+  color: #374151;
+}
+
+/* Up-FAB ----------------------------------------------------- */
+
+.fab-up {
+  position: fixed;
+  right: 1.4rem;
+  bottom: 1.4rem;
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+
+  background: radial-gradient(circle at 30% 20%, #ffffff, #e5e7eb);
+  box-shadow:
+    0 18px 30px rgba(0, 0, 0, 0.35),
+    0 0 0 1px rgba(148, 163, 184, 0.55);
+}
+
+.fab-up__icon {
+  font-size: 1.4rem;
+}

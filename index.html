@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de-CH">
+<head>
+  <meta charset="utf-8">
+  <title>KI an der Schule Huttwil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description"
+        content="Interne Plattform für KI an der Schule Huttwil: Sitzungs-Inputs, Fragen & Antworten, News, Challenges und Support.">
+  <link rel="stylesheet" href="styles/main.css">
+</head>
+<body class="app">
+
+  <header class="app-header" role="banner">
+    <div class="app-header__inner">
+      <img src="assets/logo-huttwil.svg"
+           class="app-header__logo"
+           alt="Schule Huttwil">
+
+      <div class="app-header__titles app-header__titles--right">
+        <h1 class="app-header__title">KI an der Schule Huttwil</h1>
+        <p class="app-header__subtitle">Interne Plattform für fobizz &amp; KI</p>
+      </div>
+    </div>
+  </header>
+
+  <main id="main" class="app-main" tabindex="-1">
+    <section class="card-grid" aria-label="Bereiche der KI-Plattform">
+
+      <button class="app-card app-card--sessions"
+              type="button"
+              data-section="sessions">
+        <span class="app-card__title">Sitzungs-Inputs</span>
+      </button>
+
+      <button class="app-card app-card--qa"
+              type="button"
+              data-section="qa">
+        <span class="app-card__title">Fragen &amp; Antworten</span>
+      </button>
+
+      <button class="app-card app-card--news"
+              type="button"
+              data-section="news">
+        <span class="app-card__title">KI-News</span>
+      </button>
+
+      <button class="app-card app-card--challenge"
+              type="button"
+              data-section="challenge">
+        <span class="app-card__title">Challenge</span>
+      </button>
+
+      <button class="app-card app-card--support"
+              type="button"
+              data-section="support">
+        <span class="app-card__title">Support</span>
+      </button>
+
+      <button class="app-card app-card--guidelines"
+              type="button"
+              data-section="guidelines">
+        <span class="app-card__title">Leitplanken &amp; Grundlagen</span>
+      </button>
+
+    </section>
+  </main>
+
+  <footer class="app-footer" role="contentinfo">
+    <p class="app-footer__text">
+      Schule Huttwil · KI-Deck · Demo 0.5.0
+    </p>
+  </footer>
+
+  <div class="overlay" aria-hidden="true">
+    <div class="overlay__backdrop"></div>
+
+    <div class="overlay__panel"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="overlay-title">
+      <button class="overlay__close"
+              type="button"
+              aria-label="Schliessen">✕</button>
+
+      <h2 id="overlay-title" class="overlay__title"></h2>
+      <p class="overlay__lead"></p>
+
+      <div class="overlay__body"></div>
+      <div class="overlay__actions"></div>
+    </div>
+  </div>
+
+  <button class="fab-up" type="button" aria-label="Nach oben scrollen">
+    <span class="fab-up__icon" aria-hidden="true">↑</span>
+  </button>
+
+  <script src="scripts/main.js" defer></script>
+</body>
+</html>

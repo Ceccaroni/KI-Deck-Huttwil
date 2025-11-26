@@ -1,0 +1,63 @@
+{
+  "sessions": [
+    { "state": "new", "text": "Oberstufensitzung – fobizz Classroom & Text vereinfachen" },
+    { "state": "old", "text": "MR-Sitzung – Lernziele schreiben mit KI (Sonderpädagogik)" },
+    { "state": "muted", "text": "Primarschule – erste Erfahrungen mit KI (Demo)" }
+  ],
+
+  "qa": [
+    {
+      "question": "Darf ich mit Schülerinnen und Schülern direkt in KI-Tools arbeiten?",
+      "answer": "Ja, jedoch ohne Klarnamen oder Fotos.",
+      "muted": false
+    },
+    {
+      "question": "Wie nutze ich fobizz Classroom mit mehreren Klassen?",
+      "answer": "Demo-Eintrag (Platzhalter).",
+      "muted": true
+    }
+  ],
+
+  "news": [
+    {
+      "type": "info",
+      "typeLabel": "Info",
+      "text": "Kanton Bern: Keine verbindlichen KI-Vorgaben.",
+      "muted": false
+    },
+    {
+      "type": "event",
+      "typeLabel": "Termin",
+      "text": "Frühling: Lokalpresse-Information geplant.",
+      "muted": false
+    },
+    {
+      "type": "idea",
+      "typeLabel": "Idee",
+      "text": "Wochenkicks – kurze Impulse im Schulhaus.",
+      "muted": true
+    }
+  ],
+
+  "challenge": {
+    "title": "Challenge 01: Ein hilfreicher Prompt",
+    "text": "Formuliere einen Prompt, der dir im Unterricht hilft.",
+    "meta": [
+      "Level: Einstieg",
+      "Format: kurzer Text + Prompt",
+      "Adressaten: Lehrpersonen aller Stufen"
+    ]
+  },
+
+  "support": {
+    "contacts": [
+      "Matthias – Oberstufe, fobizz",
+      "Adrian – MR-Bereich, Lernziele"
+    ],
+    "issues": [
+      "Lizenz oder Login funktioniert nicht.",
+      "Unsicherheit bei Datenschutz.",
+      "Ich habe eine Idee – wie setzen wir sie um?"
+    ]
+  }
+}
